@@ -18,7 +18,6 @@ class DayOneJournal():
 
 	def __init__(self,journalpath):
 		self.entries=[]
-		self.sortedEntries=[]
 		self.photos=[]  #todo:load photos and add method to set entry photo
 		if os.path.exists(journalpath):
 			self.jpath=journalpath
@@ -28,11 +27,10 @@ class DayOneJournal():
 
 	def reloadEntries(self):
 		self.entries=[]
-		self.sortedEntries=[]
 		for filename in glob(os.path.join(self.jpath,'entries',"*.doentry")):
 			self.entries.append(DayOneEntry(filename))
 
-		self.sortedEntries=sorted(self.entries,key=lambda ent:ent.getEntryDate)
+		self.entries.sort(key=lambda x:x.getEntryDate())
 
 
 	def getEntryIDs(self):
@@ -44,11 +42,7 @@ class DayOneJournal():
 
 	def getEntries(self,sortEntries=True):
 		"returns all DayOneEntry objects in the journal. date sorted by default"		
-		if sortEntries:
-			print "returning sorted"
-			return self.sortedEntries
-		else:
-			return self.entries
+		return self.entries
 
 	#I guess the workflow for modifying an entry would be to
 	# 1. getEntryByID we want to modify
