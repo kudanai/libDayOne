@@ -5,7 +5,8 @@ this was designed mostly for personal use, but feel free to use it in your proje
 
 ## usage
 
-right now there is only one class called DayOneEntry which represents a Day One Entry. I will add more functionality as the need arises...
+There are two classes `DayOneJournal` and `DayOneEntry`...
+refer to the docstrings for more info
 
 see the `example.py` for simple usage.
 
