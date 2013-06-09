@@ -5,11 +5,64 @@
 
 from uuid import uuid4
 from datetime import datetime
+from glob import glob
 import plistlib
 import os
 
 __author__="@kudanai"
 __version__="0.1"
+
+class DayOneJournal():
+	"class to represent an entire DayOne Journal"
+	#todo:also read security.plist
+
+	def __init__(self,journalpath):
+		self.entries=[]
+		self.photos=[]  #todo:load photos and add method to set entry photo
+		if os.path.exists(journalpath):
+			self.jpath=journalpath
+			self.reloadEntries()
+		else:
+			raise IOError("error reading from journal")
+
+	def reloadEntries(self):
+		for filename in glob(os.path.join(self.jpath,'entries',"*.doentry")):
+			self.entries.append(DayOneEntry(filename))
+
+	def getEntryIDs(self):
+		"returns a list of entry IDs"
+		entryIDS=[]
+		for entry in self.entries:
+			entryIDS.append(entry.getEntryID())
+		return entryIDS
+
+	def getEntries(self):
+		"returns all DayOneEntry objects in the journal"
+		return self.entries
+
+	#I guess the workflow for modifying an entry would be to
+	# 1. getEntryByID we want to modify
+	# 2. saveEntry (should overwrite the old plist as needed)
+	# 3. reloadEntries
+	#
+	# this is a bit expensive, but unless journal is very large
+	# this shouldn't be a problem
+	# TODO: improve this
+
+	def getEntryByID(self,entryID):
+		"returns a DayOneEntry corrosponding to the entryID"
+		for entry in self.entries: #eek!
+			if entry.getEntryID()==entryID:
+				return entry
+		return None		
+
+	def saveEntry(self,entry):
+		"saves the entry to the Journal entry path"
+		if isinstance(entry,DayOneEntry):
+			entry.writeEntryToFile(os.path.join(self.jpath,'entries'))
+		else:
+			raise IOError('invalid entry object')
+
 
 class DayOneEntry():
 	"class to represent a DayOne journal entry"
