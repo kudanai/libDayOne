@@ -8,7 +8,7 @@ this was designed mostly for personal use, but feel free to use it in your proje
 There are two classes `DayOneJournal` and `DayOneEntry`...
 refer to the docstrings for more info
 
-see the `example.py` for simple usage.
+see the `example.py` for simple usage. You should be able to use `example.py` as a fairy functional journal editor.
 
 
 ##Other projects of note
