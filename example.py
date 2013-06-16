@@ -111,7 +111,15 @@ class libDayOneEx ( wx.Frame ):
 	def onItemSelect(self,event):
 		entryID=self.mEntryList.GetItem(event.m_itemIndex,2).GetText()
 		selectedEntry=self.journal.getEntryByID(entryID)
+
+		#run entrytext through markdown
 		html=markdown.markdown(selectedEntry.getEntryText())
+
+		#if entry has a photo, attach it
+		photo=self.journal.getEntryPhoto(selectedEntry)
+		if photo:
+			html="<img style='width:50%%;height:50%%' src='file://%s' /><br>"%photo + html
+
 		self.mEntryDisplay.SetPage(html)
 
 	def getSelectedEntryID(self):

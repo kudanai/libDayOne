@@ -27,11 +27,16 @@ class DayOneJournal():
 
 	def reloadEntries(self):
 		self.entries=[]
+		self.photos=[]
+		#load entries
 		for filename in glob(os.path.join(self.jpath,'entries',"*.doentry")):
 			self.entries.append(DayOneEntry(filename))
 
-		self.entries.sort(key=lambda x:x.getEntryDate())
+		#load photos
+		for photo in glob(os.path.join(self.jpath,'photos',"*.jpg")):
+			self.photos.append(photo.strip())
 
+		self.entries.sort(key=lambda x:x.getEntryDate())
 
 	def getEntryIDs(self):
 		"returns a list of entry IDs"
@@ -51,6 +56,14 @@ class DayOneJournal():
 	# this is a bit expensive, but unless journal is very large
 	# this shouldn't be a problem
 	# TODO: improve this
+
+	def getEntryPhoto(self,entry):
+		photoname="%s.jpg"%entry.getEntryID()
+		for i in self.photos:
+			if photoname==i.split(os.sep)[-1]:
+				return i
+
+		return None
 
 	def getEntryByID(self,entryID):
 		"returns a DayOneEntry corrosponding to the entryID"
